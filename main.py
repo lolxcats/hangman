@@ -1,6 +1,6 @@
 import random
 import time
-from graphics import hangmanname, HANGMANPICS
+from graphics import *
 from wordlist import *
 
 
@@ -22,6 +22,7 @@ def ChooseDif():
         gameword = random.choice(medwords)
     if ans == "3":
         gameword = random.choice(hardwords)
+    print('Remember: you cannot enter more than one letter at a time.\n\t or else you will be wasting a turn')
     return gameword
 
 def checkguess(guess,word,progress):
@@ -30,30 +31,31 @@ def checkguess(guess,word,progress):
             progress[i] = word[i]
     return progress
 
+
 def hangmangame(gameword):
     life = 0
     wincon = False
     finalword = [char for char in gameword]
     progress = ["_"] * len(finalword)
     while life < 6 and wincon == False:
-        if progress == finalword:
-            wincon == True
         print(f"{HANGMANPICS[life]}\n{progress}\n")
         guess = input('Please enter a guess\n')
         if guess in finalword:
             progress = checkguess(guess,finalword,progress)
+            if progress == finalword:
+                wincon = True
         else:
             life +=1
             print('Try again')
     if wincon == True:
-        print('Congratz you win!')
+        print(f"{wintitle}\n\nCongratz you win!")
     if life == 6:
         print(f"{HANGMANPICS[6]}\n YOU LOSE\nThe word was: {finalword}")
 
 def main():
     while True:
         startGame()
-        time.sleep(4)
+        #time.sleep(4)
         hangmangame(ChooseDif())
         userAns = input('Play again?  y/n\n')
         if userAns == 'y':
